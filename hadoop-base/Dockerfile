@@ -1,4 +1,4 @@
-FROM mesosphere/docker-serf
+FROM mesosphere/serf
 MAINTAINER Alvin Henrick
 
 # Update Ubuntu
