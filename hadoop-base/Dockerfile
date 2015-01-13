@@ -1,5 +1,5 @@
 FROM mesosphere/serf
-MAINTAINER Alvin Henrick
+MAINTAINER Mesosphere
 
 # Update Ubuntu
 RUN apt-get update && apt-get upgrade -y
