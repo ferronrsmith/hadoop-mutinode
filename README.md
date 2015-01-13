@@ -43,9 +43,5 @@ Build Multinode Hadoop Cluster
  * Change directory to hadoop-mutinode.
  * Run `./start-cluster.sh`, it will print the containerIDs
  * Run `sudo docker-enter {containerID}` to attach to a container
- * Inside that container, run `hdfs dfs -ls /` 
+ * Inside that container, run `su - hduser -c "hdfs dfs -ls /"` to verify HDFS is running
   
-
-     
-     
-     
