@@ -1,6 +1,6 @@
 FROM mesosphere/hadoop-base
 
-MAINTAINER Alvin Henrick
+MAINTAINER Mesosphere
 
 RUN apt-get install -y iputils-ping daemontools
 
@@ -23,6 +23,9 @@ ADD config/yarn-site.xml $HADOOP_INSTALL/etc/hadoop/yarn-site.xml
 
 RUN chown -R hduser:hadoop $HADOOP_INSTALL/logs
 
+ADD config/prep-hadoop.sh $HADOOP_INSTALL/bin/prep-hadoop.sh
+RUN chmod 755 $HADOOP_INSTALL/bin/prep-hadoop.sh
+
 # SSH and SERF ports
 EXPOSE 22 7373 7946
 
@@ -32,5 +35,4 @@ EXPOSE 9000 50010 50020 50070 50075 50090 50475
 # YARN ports
 EXPOSE 8030 8031 8032 8033 8040 8042 8060 8088 50060
 
-#ENTRYPOINT ["/bin/bash", "/usr/local/hadoop/bin/start-hadoop.sh"]
-ENTRYPOINT ["/usr/bin/svscan", "/etc/service/"]
+ENTRYPOINT ["/bin/bash", "/usr/local/hadoop/bin/prep-hadoop.sh"]
