@@ -16,6 +16,6 @@ RUN chmod 1777 /tmp
 ADD config/start-namenode.sh $HADOOP_INSTALL/bin/start-namenode.sh
 RUN chmod 755 $HADOOP_INSTALL/bin/start-namenode.sh
 
-EXPOSE 9000 50010 50020 50070 50075 50090 50475
+EXPOSE 9000 50010 50020 50070 50075 50090 50470 50475
 
-ENTRYPOINT ["/bin/bash", "$HADOOP_INSTALL/bin/start-namenode.sh"]
+ENTRYPOINT ["/bin/bash", "/usr/local/hadoop/bin/start-namenode.sh"]
