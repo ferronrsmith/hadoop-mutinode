@@ -31,13 +31,13 @@ Build Multinode Hadoop Cluster
 * Build hadoop-datanode container
   * Run `docker build -t mesosphere/hadoop-datanode hadoop-datanode`
 
-** Start the containers **
+**Start the containers**
 
  * On the host where you want the NameNode, run `./start-namenode.sh`
  * To start a DataNode on the same host, run `./start-datanode.sh`
  * From other hosts, start a DataNode with `./start-datanode.sh <namenode_ip>`
 
-** Verify HDFS is running **
+**Verify HDFS is running**
 
  * View the HDFS NameNode Web UI on `<namenode_ip>:50070`
  * View the HDFS DataNode Web UI on any `<datanode_ip>:50075`
