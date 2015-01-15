@@ -1,21 +1,17 @@
 FROM mesosphere/serf
 MAINTAINER Mesosphere
 
-# Update Ubuntu
-RUN apt-get update && apt-get upgrade -y
-
-RUN apt-get install -y maven llvm-gcc build-essential zlib1g-dev make cmake pkg-config libssl-dev automake autoconf
-
-# Add oracle java 7 repository
-RUN apt-get -y install software-properties-common
-RUN add-apt-repository ppa:webupd8team/java
-RUN apt-get -y update
-
 # Accept the Oracle Java license
 RUN echo "oracle-java7-installer shared/accepted-oracle-license-v1-1 boolean true" | debconf-set-selections
 
-# Install Oracle Java
-RUN apt-get -y install oracle-java7-installer
+# Update Ubuntu
+RUN apt-get update \
+ && apt-get install -y software-properties-common
+RUN add-apt-repository ppa:webupd8team/java
+
+RUN apt-get update \
+ && apt-get install -y \
+  maven llvm-gcc build-essential zlib1g-dev make cmake pkg-config libssl-dev automake autoconf software-properties-common oracle-java7-installer openssh-server
 
 RUN update-alternatives --display java
 
@@ -25,7 +21,6 @@ ENV PATH $PATH:$JAVA_HOME/bin
 RUN addgroup hadoop
 RUN useradd -d /home/hduser -m -s /bin/bash -G hadoop hduser
 
-RUN apt-get install -y openssh-server
 RUN mkdir /var/run/sshd
 RUN su hduser -c "ssh-keygen -t rsa -f ~/.ssh/id_rsa -P ''"
 RUN su hduser -c "cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys"
