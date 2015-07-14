@@ -48,11 +48,6 @@ RUN chown -R hduser:hadoop /usr/local/hadoop-2.7.0
 
 ADD config/bashrc /home/hduser/.bashrc
 
-# working around docker.io build error
-RUN ls -la /usr/local/hadoop/etc/hadoop/*-env.sh
-RUN chmod +x /usr/local/hadoop/etc/hadoop/*-env.sh
-RUN ls -la /usr/local/hadoop/etc/hadoop/*-env.sh
-
 # fix the 254 error code
 RUN sed  -i "/^[^#]*UsePAM/ s/.*/#&/"  /etc/ssh/sshd_config
 RUN echo "UsePAM no" >> /etc/ssh/sshd_config
@@ -60,5 +55,10 @@ RUN echo "Port 2122" >> /etc/ssh/sshd_config
 
 RUN rm -f /usr/local/hadoop/etc/hadoop/hadoop-env.sh
 ADD config/hadoop-env.sh /usr/local/hadoop/etc/hadoop/hadoop-env.sh
+
+# working around docker.io build error
+RUN ls -la /usr/local/hadoop/etc/hadoop/*-env.sh
+RUN chmod +x /usr/local/hadoop/etc/hadoop/*-env.sh
+RUN ls -la /usr/local/hadoop/etc/hadoop/*-env.sh
 
 EXPOSE 22
