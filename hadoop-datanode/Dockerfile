@@ -1,6 +1,5 @@
-FROM mesosphere/hadoop-base
-
-MAINTAINER Mesosphere
+FROM ferronrsmith/hadoop-base
+MAINTAINER Ferron Hanse
 
 RUN apt-get install -y iputils-ping
 

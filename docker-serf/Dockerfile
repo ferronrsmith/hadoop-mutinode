@@ -8,8 +8,8 @@
 # The docker images was directly taken from sequenceiq and converetd to ubuntu image
 # because I wanted to create the cluster on ubuntu.
 
-FROM ubuntu:saucy
-MAINTAINER Alvin Henrick
+FROM ubuntu:trusty
+MAINTAINER Ferron Hanse
 
 RUN apt-get update
 RUN apt-get install -y dnsmasq unzip curl

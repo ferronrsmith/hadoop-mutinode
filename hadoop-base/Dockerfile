@@ -1,5 +1,5 @@
-FROM mesosphere/serf
-MAINTAINER Mesosphere
+FROM ferronrsmith/serf
+MAINTAINER Ferron Hanse
 
 # Accept the Oracle Java license
 RUN echo "oracle-java7-installer shared/accepted-oracle-license-v1-1 boolean true" | debconf-set-selections
