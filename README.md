@@ -18,18 +18,18 @@ Build Multinode Hadoop Cluster
 ------------------------------
  
 * Clone github repo
-  * `git clone https://github.com/mesosphere/hadoop-mutinode`
+  * `git clone https://github.com/feronrsmith/hadoop-mutinode`
   * `cd hadoop-mutinode`
 
 * Build hadoop-base container (only if modified)
-  * Run `docker build -t mesosphere/hadoop-base hadoop-base`
+  * Run `./build base`
   * This will take a while to build the container go grab a cup of coffee or whatever drink you like :)
  
 * Build hadoop-namenode container
-  * Run `docker build -t mesosphere/hadoop-namenode hadoop-namenode`  
+  * Run `./build misc hadoop-namenode`  
   
 * Build hadoop-datanode container
-  * Run `docker build -t mesosphere/hadoop-datanode hadoop-datanode`
+  * Run `./build misc hadoop-datanode`
 
 **Start the containers**
 
