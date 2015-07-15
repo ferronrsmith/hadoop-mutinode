@@ -29,36 +29,27 @@ RUN mv ./ssh_config /home/hduser/.ssh/config
 # fix permission:
 RUN chown hduser:hduser /home/hduser/.ssh/config
 
-# hadoop
-#RUN curl -s http://www.eu.apache.org/dist/hadoop/common/hadoop-2.7.0/hadoop-2.7.0.tar.gz | tar -xz -C /usr/local/
-RUN curl -s https://archive.apache.org/dist/hadoop/common/hadoop-2.7.0/hadoop-2.7.0.tar.gz | tar -xz -C /usr/local/
-RUN cd /usr/local && ln -s ./hadoop-2.7.0 hadoop
-#RUN ln -s /usr/local/hadoop-2.7.0 /usr/local/hadoop
+RUN wget http://apache.mirror.anlx.net/hadoop/core/hadoop-2.7.1/hadoop-2.7.1-src.tar.gz
+RUN tar -xvf hadoop-2.7.1-src.tar.gz
 
-# fixing the libhadoop.so like a boss
-RUN rm  /usr/local/hadoop/lib/native/*
-RUN curl -Ls http://dl.bintray.com/sequenceiq/sequenceiq-bin/hadoop-native-64-2.7.0.tar | tar -x -C /usr/local/hadoop/lib/native/
+RUN wget https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.gz
+RUN tar -xvf protobuf-2.5.0.tar.gz
+RUN cd protobuf-2.5.0 && ./configure
+RUN cd protobuf-2.5.0 && make
+RUN cd protobuf-2.5.0 && make check
+RUN cd protobuf-2.5.0 && make install
+RUN cd protobuf-2.5.0 && ldconfig
+RUN protoc --version
+#ENV MAVEN_OPTS -Xms512m -XX:MaxPermSize=256 -Xmx512m
+RUN cd hadoop-2.7.1-src && mvn package -Pdist,native -DskipTests -Dtar
 
-ENV HADOOP_PREFIX /usr/local/hadoop
-
-RUN mkdir $HADOOP_PREFIX/input
-RUN cp $HADOOP_PREFIX/etc/hadoop/*.xml $HADOOP_PREFIX/input
-
-RUN chown -R hduser:hadoop /usr/local/hadoop-2.7.0
+RUN  cd hadoop-2.7.1-src && tar -xvf hadoop-dist/target/hadoop-2.7.1.tar.gz -C /usr/local/
+RUN ln -s /usr/local/hadoop-2.7.1 /usr/local/hadoop
+RUN chown -R hduser:hadoop /usr/local/hadoop-2.7.1
 
 ADD config/bashrc /home/hduser/.bashrc
 
-# fix the 254 error code
-RUN sed  -i "/^[^#]*UsePAM/ s/.*/#&/"  /etc/ssh/sshd_config
-RUN echo "UsePAM no" >> /etc/ssh/sshd_config
-RUN echo "Port 2122" >> /etc/ssh/sshd_config
-
 RUN rm -f /usr/local/hadoop/etc/hadoop/hadoop-env.sh
 ADD config/hadoop-env.sh /usr/local/hadoop/etc/hadoop/hadoop-env.sh
-
-# working around docker.io build error
-RUN ls -la /usr/local/hadoop/etc/hadoop/*-env.sh
-RUN chmod +x /usr/local/hadoop/etc/hadoop/*-env.sh
-RUN ls -la /usr/local/hadoop/etc/hadoop/*-env.sh
 
 EXPOSE 22
