@@ -1,56 +1,39 @@
-FROM ferronrsmith/serf
+FROM ferronrsmith/hadoop-base
 MAINTAINER Ferron Hanse
 
-# Accept the Oracle Java license
-RUN echo "oracle-java7-installer shared/accepted-oracle-license-v1-1 boolean true" | debconf-set-selections
+RUN apt-get install -y iputils-ping daemontools runit
 
-# Update Ubuntu
-RUN apt-get update \
- && apt-get install -y software-properties-common
-RUN add-apt-repository ppa:webupd8team/java
+ENV HADOOP_INSTALL /usr/local/hadoop
 
-RUN apt-get update \
- && apt-get install -y \
-  maven llvm-gcc build-essential zlib1g-dev make cmake pkg-config libssl-dev automake autoconf software-properties-common oracle-java7-installer openssh-server
+RUN mkdir -p /etc/service/serf
+RUN mkdir -p /etc/service/sshd
 
-RUN update-alternatives --display java
+ADD config/service /etc/service
 
-ENV JAVA_HOME /usr/lib/jvm/java-7-oracle/
-ENV PATH $PATH:$JAVA_HOME/bin
+RUN chmod +x /etc/service/serf/run
+RUN chmod +x /etc/service/sshd/run
 
-RUN addgroup hadoop
-RUN useradd -d /home/hduser -m -s /bin/bash -G hadoop hduser
 
-RUN mkdir /var/run/sshd
-RUN su hduser -c "ssh-keygen -t rsa -f ~/.ssh/id_rsa -P ''"
-RUN su hduser -c "cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys"
-ADD config/ssh_config ./ssh_config
-RUN mv ./ssh_config /home/hduser/.ssh/config
-# fix permission:
-RUN chown hduser:hduser /home/hduser/.ssh/config
+ADD config/hdfs-site.xml $HADOOP_INSTALL/etc/hadoop/hdfs-site.xml
+ADD config/core-site.xml $HADOOP_INSTALL/etc/hadoop/core-site.xml
+ADD config/mapred-site.xml $HADOOP_INSTALL/etc/hadoop/mapred-site.xml
+ADD config/yarn-site.xml $HADOOP_INSTALL/etc/hadoop/yarn-site.xml
+ADD config/slaves $HADOOP_INSTALL/etc/hadoop/slaves
 
-RUN wget http://apache.mirror.anlx.net/hadoop/core/hadoop-2.7.1/hadoop-2.7.1-src.tar.gz
-RUN tar -xvf hadoop-2.7.1-src.tar.gz
+RUN mkdir $HADOOP_INSTALL/logs
+RUN chown -R hduser:hadoop $HADOOP_INSTALL/logs
+RUN chmod 1777 /tmp
 
-#RUN wget https://protobuf.googlecode.com/files/protobuf-2.6.1.tar.gz
-RUN wget https://github.com/google/protobuf/releases/download/v2.6.1/protobuf-2.6.1.tar.gz
-RUN tar -xvf protobuf-2.6.1.tar.gz
-RUN cd protobuf-2.6.1 && ./configure
-RUN cd protobuf-2.6.1 && make
-RUN cd protobuf-2.6.1 && make check
-RUN cd protobuf-2.6.1 && make install
-RUN cd protobuf-2.6.1 && ldconfig
-RUN protoc --version
-#ENV MAVEN_OPTS -Xms512m -XX:MaxPermSize=256 -Xmx512m
-RUN cd hadoop-2.7.1-src && mvn package -Pdist,native -DskipTests -Dtar
+ADD config/start-hadoop.sh $HADOOP_INSTALL/bin/start-hadoop.sh
+RUN chmod 755 $HADOOP_INSTALL/bin/start-hadoop.sh
 
-RUN  cd hadoop-2.7.1-src && tar -xvf hadoop-dist/target/hadoop-2.7.1.tar.gz -C /usr/local/
-RUN ln -s /usr/local/hadoop-2.7.1 /usr/local/hadoop
-RUN chown -R hduser:hadoop /usr/local/hadoop-2.7.1
+# SSH and SERF ports
+EXPOSE 22 7373 7946
 
-ADD config/bashrc /home/hduser/.bashrc
+# HDFS ports
+EXPOSE 9000 50010 50020 50070 50075 50090 50475
 
-RUN rm -f /usr/local/hadoop/etc/hadoop/hadoop-env.sh
-ADD config/hadoop-env.sh /usr/local/hadoop/etc/hadoop/hadoop-env.sh
+# YARN ports
+EXPOSE 8030 8031 8032 8033 8040 8042 8060 8088 50060
 
-EXPOSE 22
+ENTRYPOINT ["/bin/bash", "/usr/local/hadoop/bin/start-hadoop.sh"]
