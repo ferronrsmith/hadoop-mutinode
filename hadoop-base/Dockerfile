@@ -32,14 +32,13 @@ RUN chown hduser:hduser /home/hduser/.ssh/config
 RUN wget http://apache.mirror.anlx.net/hadoop/core/hadoop-2.7.1/hadoop-2.7.1-src.tar.gz
 RUN tar -xvf hadoop-2.7.1-src.tar.gz
 
-#RUN wget https://protobuf.googlecode.com/files/protobuf-2.6.1.tar.gz
-RUN wget https://github.com/google/protobuf/releases/download/v2.6.1/protobuf-2.6.1.tar.gz
-RUN tar -xvf protobuf-2.6.1.tar.gz
-RUN cd protobuf-2.6.1 && ./configure
-RUN cd protobuf-2.6.1 && make
-RUN cd protobuf-2.6.1 && make check
-RUN cd protobuf-2.6.1 && make install
-RUN cd protobuf-2.6.1 && ldconfig
+RUN wget https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.gz
+RUN tar -xvf protobuf-2.5.0.tar.gz
+RUN cd protobuf-2.5.0 && ./configure
+RUN cd protobuf-2.5.0 && make
+RUN cd protobuf-2.5.0 && make check
+RUN cd protobuf-2.5.0 && make install
+RUN cd protobuf-2.5.0 && ldconfig
 RUN protoc --version
 #ENV MAVEN_OPTS -Xms512m -XX:MaxPermSize=256 -Xmx512m
 RUN cd hadoop-2.7.1-src && mvn package -Pdist,native -DskipTests -Dtar
