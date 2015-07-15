@@ -45,7 +45,6 @@ case $1 in
 		;;
 	all)
 	    build_serf
-		build_img
 		build_base
 		build_hadoop
 		;;
