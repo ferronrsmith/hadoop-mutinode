@@ -1,0 +1,57 @@
+#!/bin/bash
+
+usage () {
+	echo "Usage: $0 <base|hadoop|serf|misc|all>"
+	echo "  base       - build base image"
+	echo "  hadoop     - build dn and nn-dn image"
+	echo "  serf       - build serf image"
+	echo "  misc       - <img_name> <folder>"
+	echo "  all        - build all the above"
+	echo "  help       - prints this message"
+}
+
+build_hadoop () {
+    build_img "hadoop-dn" "hadoop-dn"
+    build_img "hadoop-nn-dn" "hadoop-nn-dn"
+}
+
+build_base () {
+    build_img "hadoop-base" "hadoop-base"
+}
+
+build_serf () {
+    build_img "serf" "docker-serf"
+}
+
+
+build_img () {
+    docker build --rm --no-cache -t "ferronrsmith/${1}" "${2}"
+}
+
+if [ $# -ne 1 ]; then
+	usage
+	exit 1
+fi
+
+case $1 in
+	hadoop)
+		build_hadoop
+		;;
+	base)
+		build_base
+		;;
+	serf)
+		build_serf
+		;;
+	all)
+	    build_serf
+		build_base
+		build_hadoop
+		;;
+	misc)
+		build_img "${2}" "${3}"
+		;;
+	help)
+		usage
+		;;
+esac
