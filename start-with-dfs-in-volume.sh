@@ -9,12 +9,12 @@ host_data_dir_s3=/tmp/hdfs/slave3
 # Taken from dfs.datanode.data.dir in hdfs-site.xml
 hdfs_container_dir=/home/hduser/hdfs
 
-docker run -d -t --dns 127.0.0.1 -v $host_data_dir_s1:$hdfs_container_dir -P --name slave1 -h slave1.hdfs.local ferronrsmith/hadoop-dn
+docker run -d -t --dns 127.0.0.1 -v $host_data_dir_s1:$hdfs_container_dir -P --name slave1 -h slave1-hdfs-local ferronrsmith/hadoop-dn
 
 FIRST_IP=$(docker inspect --format="{{.NetworkSettings.IPAddress}}" slave1)
 
-docker run -d -t --dns 127.0.0.1 -v $host_data_dir_s2:$hdfs_container_dir -e JOIN_IP=$FIRST_IP -P --name slave2 -h slave2.hdfs.local ferronrsmith/hadoop-dn
+docker run -d -t --dns 127.0.0.1 -v $host_data_dir_s2:$hdfs_container_dir -e JOIN_IP=$FIRST_IP -P --name slave2 -h slave2-hdfs-local ferronrsmith/hadoop-dn
 
-docker run -d -t --dns 127.0.0.1 -v $host_data_dir_s3:$hdfs_container_dir -e JOIN_IP=$FIRST_IP -P --name slave3 -h slave3.hdfs.local ferronrsmith/hadoop-dn
+docker run -d -t --dns 127.0.0.1 -v $host_data_dir_s3:$hdfs_container_dir -e JOIN_IP=$FIRST_IP -P --name slave3 -h slave3-hdfs-local ferronrsmith/hadoop-dn
 
-docker run -d -t --dns 127.0.0.1 -v $host_data_dir_m:$hdfs_container_dir -e JOIN_IP=$FIRST_IP -P --name master -h master.hdfs.local ferronrsmith/hadoop-nn-dn
+docker run -d -t --dns 127.0.0.1 -v $host_data_dir_m:$hdfs_container_dir -e JOIN_IP=$FIRST_IP -P --name master -h master-hdfs-local ferronrsmith/hadoop-nn-dn
