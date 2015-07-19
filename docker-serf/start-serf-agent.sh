@@ -21,4 +21,21 @@ cat > $SERF_CONFIG_DIR/node.json <<EOF
 }
 EOF
 
+[[ -n $TUTUM_SERVICE_HOSTNAME ]] && cat > $SERF_CONFIG_DIR/serf-config.json <<EOF
+{
+  "event_handlers": ["/etc/serf/event-router.sh"],
+  "rpc_addr": "0.0.0.0:7373",
+  "profile": "wan"
+  "interface" : "ethwe"
+}
+EOF
+
+# if JOIN_IP env variable set generate a config json for serf
+[[ -n $SLAVE1_HDFS_LOCAL_PORT_9000_TCP_ADDR ]] && cat > $SERF_CONFIG_DIR/join.json <<EOF
+{
+  "start_join" : ["$SLAVE1_HDFS_LOCAL_PORT_9000_TCP_ADDR"]
+}
+EOF
+
+
 /bin/serf agent -config-dir $SERF_CONFIG_DIR

@@ -44,7 +44,7 @@
 
     <property>
         <name>dfs.client.local.interfaces</name>
-        <value>eth0,ethwe</value>
+        <value>ethwe,eth0</value>
         <description>A comma separated list of network interface names to use
             for data transfer between the client and datanodes. When creating
             a connection to read from or write to a datanode, the client
@@ -66,7 +66,7 @@
 
     <property>
         <name>dfs.namenode.datanode.registration.ip-hostname-check</name>
-        <value>true</value>
+        <value>false</value>
         <description>
             If true (the default), then the namenode requires that a connecting
             datanode's address must be resolved to a hostname.  If necessary, a reverse
