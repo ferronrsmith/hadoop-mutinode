@@ -25,7 +25,7 @@ EOF
 {
   "event_handlers": ["/etc/serf/event-router.sh"],
   "rpc_addr": "0.0.0.0:7373",
-  "profile": "wan"
+  "profile": "wan",
   "interface" : "ethwe"
 }
 EOF
