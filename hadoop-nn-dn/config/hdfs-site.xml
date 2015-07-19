@@ -1,34 +1,82 @@
 <?xml version="1.0"?>
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 <configuration>
- <property>
+    <property>
         <name>dfs.datanode.data.dir</name>
         <value>file:///home/hduser/hdfs/datanode</value>
-        <description>DataNode directory</description>
- </property>
- <property>
+        <description>Determines where on the local filesystem an DFS data node
+            should store its blocks.  If this is a comma-delimited
+            list of directories, then data will be stored in all named
+            directories, typically on different devices.
+            Directories that do not exist are ignored.
+        </description>
+    </property>
+    <property>
         <name>dfs.namenode.name.dir</name>
         <value>file:///home/hduser/hdfs/namenode</value>
-        <description>NameNode directory for namespace and transaction logs storage.</description>
- </property>
+        <description>Determines where on the local filesystem the DFS name node
+            should store the name table(fsimage). If this is a comma-delimited list
+            of directories then the name table is replicated in all of the
+            directories, for redundancy.
+        </description>
+    </property>
 
-  <property>
+    <property>
         <name>dfs.replication</name>
         <value>2</value>
-  </property>
-  
-   <property>
-     <name>dfs.permissions</name>
-     <value>false</value>
-   </property>
-   
-   <property>
-        <name>dfs.datanode.use.datanode.hostname</name>
-        <value>false</value>
+        <description>Default block replication.
+            The actual number of replications can be specified when the file is created.
+            The default is used if replication is not specified in create time.
+        </description>
     </property>
-   
+
+    <property>
+        <name>dfs.permissions.enabled</name>
+        <value>false</value>
+        <description>
+            If "true", enable permission checking in HDFS.
+            If "false", permission checking is turned off,
+            but all other behavior is unchanged.
+            Switching from one parameter value to the other does not change the mode,
+            owner or group of files or directories.
+        </description>
+    </property>
+
+    <property>
+        <name>dfs.client.local.interfaces</name>
+        <value>eth0,ethwe</value>
+        <description>A comma separated list of network interface names to use
+            for data transfer between the client and datanodes. When creating
+            a connection to read from or write to a datanode, the client
+            chooses one of the specified interfaces at random and binds its
+            socket to the IP of that interface. Individual names may be
+            specified as either an interface name (eg "eth0"), a subinterface
+            name (eg "eth0:0"), or an IP address (which may be specified using
+            CIDR notation to match a range of IPs).
+        </description>
+    </property>
+
+    <property>
+        <name>dfs.datanode.use.datanode.hostname</name>
+        <value>true</value>
+        <description>Whether datanodes should use datanode hostnames when
+            connecting to other datanodes for data transfer.
+        </description>
+    </property>
+
     <property>
         <name>dfs.namenode.datanode.registration.ip-hostname-check</name>
-        <value>false</value>
-    </property> 
+        <value>true</value>
+        <description>
+            If true (the default), then the namenode requires that a connecting
+            datanode's address must be resolved to a hostname.  If necessary, a reverse
+            DNS lookup is performed.  All attempts to register a datanode from an
+            unresolvable address are rejected.
+
+            It is recommended that this setting be left on to prevent accidental
+            registration of datanodes listed by hostname in the excludes file during a
+            DNS outage.  Only set this to false in environments where there is no
+            infrastructure to support reverse DNS lookup.
+        </description>
+    </property>
 </configuration>
