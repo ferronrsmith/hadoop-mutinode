@@ -1,5 +1,14 @@
 #!/bin/bash
 
+
+[[ -n $TUTUM_SERVICE_HOSTNAME ]] && cat > /etc/dnsmasq.conf <<EOF
+listen-address=0.0.0.0
+resolv-file=/etc/resolv.dnsmasq.conf
+conf-dir=/etc/dnsmasq.d
+user=root
+interface=ethwe
+EOF
+
 service dnsmasq start
 
 SERF_CONFIG_DIR=/etc/serf

@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if [[ -n $TUTUM_SERVICE_HOSTNAME ]]; then
+    sed 's/###INTERFACE###/ethwe/' -i "$HADOOP_INSTALL/etc/hadoop/hdfs-site.xml"
+else
+    sed 's/###INTERFACE###/eth0/' -i "$HADOOP_INSTALL/etc/hadoop/hdfs-site.xml"
+fi
+
 # create and format namenode if absent
 if [ ! -d /home/hduser/hdfs/namenode ]; then
     mkdir -p /home/hduser/hdfs/namenode

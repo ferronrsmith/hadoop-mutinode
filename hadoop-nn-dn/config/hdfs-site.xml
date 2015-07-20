@@ -44,7 +44,7 @@
 
     <property>
         <name>dfs.client.local.interfaces</name>
-        <value>ethwe,eth0</value>
+        <value>###INTERFACE###</value>
         <description>A comma separated list of network interface names to use
             for data transfer between the client and datanodes. When creating
             a connection to read from or write to a datanode, the client
@@ -57,8 +57,16 @@
     </property>
 
     <property>
+        <name>dfs.datanode.dns.interface</name>
+        <value>###INTERFACE###</value>
+        <description>The name of the Network Interface from which a data node should
+            report its IP address.
+        </description>
+    </property>
+
+    <property>
         <name>dfs.datanode.use.datanode.hostname</name>
-        <value>true</value>
+        <value>false</value>
         <description>Whether datanodes should use datanode hostnames when
             connecting to other datanodes for data transfer.
         </description>

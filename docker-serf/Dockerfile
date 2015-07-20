@@ -35,6 +35,9 @@ ADD handlers $SERF_CONFIG_DIR/handlers
 ADD start-serf-agent.sh  $SERF_CONFIG_DIR/start-serf-agent.sh
 RUN chmod +x  $SERF_CONFIG_DIR/start-serf-agent.sh
 
+## Currently we need to tweak nsswitch.conf(5), mainly due to zettio/weave#68
+RUN sed 's/^\(hosts:[\ ]*\)\(files\)\ \(dns\)$/\1\3 \2/' -i /etc/nsswitch.conf
+
 EXPOSE 7373 7946
 
 CMD /etc/serf/start-serf-agent.sh
