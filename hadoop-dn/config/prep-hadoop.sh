@@ -2,6 +2,11 @@
 
 if [[ -n $TUTUM_SERVICE_HOSTNAME ]]; then
     sed 's/###INTERFACE###/ethwe/' -i "$HADOOP_INSTALL/etc/hadoop/hdfs-site.xml"
+
+    if [ -z "$(grep "nameserver 0.0.0.1" /etc/resolv.conf)" ]; then
+        echo 'nameserver 0.0.0.0' | cat - /etc/resolv.conf > temp && cp temp /etc/resolv.conf
+    fi
+
 else
     sed 's/###INTERFACE###/eth0/' -i "$HADOOP_INSTALL/etc/hadoop/hdfs-site.xml"
 fi

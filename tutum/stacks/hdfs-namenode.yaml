@@ -1,0 +1,16 @@
+master-hdfs-local:
+  image: 'ferronrsmith/hadoop-nn-dn:latest'
+  deployment_strategy: high_availability
+  environment:
+    - JOIN_IP=slave1-hdfs-local
+  links:
+    - 'slave1-hdfs-local.hdfs-datanode:slave1-hdfs-local'
+  ports:
+    - '8088:8088'
+    - '50070:50070'
+    - '50075:50075'
+  restart: always
+  tags:
+    - namenode
+  volumes:
+    - '/opt/common/master:/home/hduser/hdfs'

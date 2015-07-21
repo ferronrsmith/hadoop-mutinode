@@ -1,0 +1,44 @@
+slave1-hdfs-local:
+  image: 'ferronrsmith/hadoop-dn:latest'
+  deployment_strategy: high_availability
+  ports:
+    - '50070'
+    - '50075'
+    - '8088'
+  restart: always
+  tags:
+    - datanode
+  volumes:
+    - '/opt/common/slave1:/home/hduser/hdfs'
+slave2-hdfs-local:
+  image: 'ferronrsmith/hadoop-dn:latest'
+  deployment_strategy: high_availability
+  environment:
+    - JOIN_IP=slave1-hdfs-local
+  links:
+    - slave1-hdfs-local
+  ports:
+    - '50070'
+    - '50075'
+    - '8088'
+  restart: always
+  tags:
+    - datanode
+  volumes:
+    - '/opt/common/slave2:/home/hduser/hdfs'
+slave3-hdfs-local:
+  image: 'ferronrsmith/hadoop-dn:latest'
+  deployment_strategy: high_availability
+  environment:
+    - JOIN_IP=slave1-hdfs-local
+  links:
+    - slave1-hdfs-local
+  ports:
+    - '50070'
+    - '50075'
+    - '8088'
+  restart: always
+  tags:
+    - datanode
+  volumes:
+    - '/opt/common/slave3:/home/hduser/hdfs'
