@@ -1,5 +1,9 @@
 #!/bin/bash
 
+[[ -n $TUTUM_SERVICE_HOSTNAME ]] && cat > /etc/resolv.conf <<EOF
+nameserver 127.0.0.1
+EOF
+
 if [[ -n $TUTUM_SERVICE_HOSTNAME ]]; then
     sed 's/###INTERFACE###/ethwe/' -i "$HADOOP_INSTALL/etc/hadoop/hdfs-site.xml"
 else
