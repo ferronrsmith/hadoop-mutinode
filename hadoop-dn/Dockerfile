@@ -1,7 +1,7 @@
 FROM ferronrsmith/hadoop-base
 MAINTAINER Ferron Hanse
 
-RUN apt-get install -y iputils-ping daemontools
+RUN apt-get install -y iputils-ping daemontools dnsutils vim
 
 ENV HADOOP_INSTALL /usr/local/hadoop
 
