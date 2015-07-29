@@ -53,6 +53,9 @@ RUN cd /usr/local && ln -s ./hadoop-2.7.0 hadoop
 RUN rm  /usr/local/hadoop/lib/native/*
 RUN curl -Ls http://dl.bintray.com/sequenceiq/sequenceiq-bin/hadoop-native-64-2.7.0.tar | tar -x -C /usr/local/hadoop/lib/native/
 
+RUN ln -s /usr/local/hadoop-2.7.0 /usr/local/hadoop
+RUN chown -R hduser:hadoop /usr/local/hadoop-2.7.0
+
 ADD config/bashrc /home/hduser/.bashrc
 
 RUN rm -f /usr/local/hadoop/etc/hadoop/hadoop-env.sh
