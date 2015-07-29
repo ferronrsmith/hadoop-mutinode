@@ -44,17 +44,17 @@ RUN chown hduser:hduser /home/hduser/.ssh/config
 #RUN cd hadoop-2.7.1-src && mvn package -Pdist,native -DskipTests -Dtar
 #
 #RUN  cd hadoop-2.7.1-src && tar -xvf hadoop-dist/target/hadoop-2.7.1.tar.gz -C /usr/local/
-#RUN ln -s /usr/local/hadoop-2.7.1 /usr/local/hadoop
+#RUN ln -s /usr/local/hadoop-2.7.1 /usr/local/hadocd op
 #RUN chown -R hduser:hadoop /usr/local/hadoop-2.7.1
 
-RUN curl -s https://archive.apache.org/dist/hadoop/common/hadoop-2.7.0/hadoop-2.7.0.tar.gz | tar -xz -C /usr/local/
-RUN cd /usr/local && ln -s ./hadoop-2.7.0 hadoop
+RUN curl -s https://archive.apache.org/dist/hadoop/common/hadoop-2.7.1/hadoop-2.7.1.tar.gz | tar -xz -C /usr/local/
+RUN cd /usr/local && ln -s ./hadoop-2.7.1 hadoop
 
 RUN rm  /usr/local/hadoop/lib/native/*
-RUN curl -Ls http://dl.bintray.com/sequenceiq/sequenceiq-bin/hadoop-native-64-2.7.0.tar | tar -x -C /usr/local/hadoop/lib/native/
+RUN curl -Ls https://storage.googleapis.com/hdfs-bucket/hadoop/hadoop-native-64-2.7.1.tar | tar -x -C /usr/local/hadoop/lib/native/
 
-RUN ln -s /usr/local/hadoop-2.7.0 /usr/local/hadoop
-RUN chown -R hduser:hadoop /usr/local/hadoop-2.7.0
+RUN ln -s /usr/local/hadoop-2.7.1 /usr/local/hadoop
+RUN chown -R hduser:hadoop /usr/local/hadoop-2.7.1
 
 ADD config/bashrc /home/hduser/.bashrc
 
