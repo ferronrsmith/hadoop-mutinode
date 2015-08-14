@@ -37,12 +37,10 @@ RUN apt-get install -y \
     sendemail
 
 RUN mkdir -p /etc/service/serf
-RUN mkdir -p /etc/service/sshd
 
 ADD config/service /etc/service
 
 RUN chmod +x /etc/service/serf/run
-RUN chmod +x /etc/service/sshd/run
 
 ADD config/prep-hadoop.sh /opt/fuse/prep-hadoop.sh
 RUN chmod 755 opt/fuse/prep-hadoop.sh
