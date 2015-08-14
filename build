@@ -19,6 +19,10 @@ build_base () {
     build_img "hadoop-base" "hadoop-base"
 }
 
+build_fuse_base () {
+    build_img "hadoop-fuse-base" "hadoop-fuse-base"
+}
+
 build_serf () {
     build_img "serf" "docker-serf"
 }
@@ -40,8 +44,11 @@ case $1 in
 	base)
 		build_base
 		;;
+	fuse)
+		build_base
+		;;
 	serf)
-		build_serf
+		build_fuse_base
 		;;
 	all)
 	    build_serf
