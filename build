@@ -45,10 +45,10 @@ case $1 in
 		build_base
 		;;
 	fuse)
-		build_base
+		build_fuse_base
 		;;
 	serf)
-		build_fuse_base
+		build_serf
 		;;
 	all)
 	    build_serf
